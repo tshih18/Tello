@@ -22,13 +22,8 @@ drone.bind(COMMAND_PORT);
 const droneState = dgram.createSocket('udp4');
 droneState.bind(STATE_PORT);
 
-// const droneCam = dgram.createSocket('udp4');
-// droneCam.bind(CAM_PORT);
-
-
-// droneCam.on('message', message => {
-//   console.log(`DRONE CAM MESSAGE: ${message}`);
-// })
+const droneCam = dgram.createSocket('udp4');
+droneCam.bind(CAM_PORT);
 
 // For UDP request, not response
 function handleError(err) {
@@ -69,7 +64,7 @@ go();
 io.on('connection', socket => {
   console.log('User Connected');
   socket.emit('status', 'CONNECTED');
-  
+
   socket.on('command', command => {
     console.log(`(browser): ${command}`);
     drone.send(command, 0, command.length, COMMAND_PORT, HOST, handleError);
@@ -95,6 +90,14 @@ droneState.on(
     io.sockets.emit('droneState', formattedState);
   }, 100)
 );
+
+droneCam.on('message',
+  throttle(frame => {
+    console.log(`DRONE CAM: ${typeof(frame)}`);
+    io.sockets.emit('droneCam', frame);
+  }, 1000)
+)
+
 
 server.listen(SOCKET_PORT, () => {
   console.log(`Socket io server up and running on port ${SOCKET_PORT}`);
