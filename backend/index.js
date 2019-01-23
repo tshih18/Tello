@@ -22,8 +22,8 @@ drone.bind(COMMAND_PORT);
 const droneState = dgram.createSocket('udp4');
 droneState.bind(STATE_PORT);
 
-const droneCam = dgram.createSocket('udp4');
-droneCam.bind(CAM_PORT);
+// const droneCam = dgram.createSocket('udp4');
+// droneCam.bind(CAM_PORT);
 
 // For UDP request, not response
 function handleError(err) {
@@ -42,25 +42,6 @@ function parseState(state) {
     }, {});
 }
 
-
-// const sequence = ['command', 'battery?', 'takeoff', 'land'];
-const sequence = ['command'];
-
-let i = 0
-async function go() {
-  const command = sequence[i];
-  const delay = commandDelays[command];
-  console.log(`Sending command: ${command}`);
-  drone.send(command, 0, command.length, COMMAND_PORT, HOST, handleError);
-  await wait(delay);
-  i += 1;
-  if (i < sequence.length) {
-    return go();
-  }
-}
-
-go();
-
 io.on('connection', socket => {
   console.log('User Connected');
   socket.emit('status', 'CONNECTED');
@@ -69,8 +50,6 @@ io.on('connection', socket => {
     console.log(`(browser): ${command}`);
     drone.send(command, 0, command.length, COMMAND_PORT, HOST, handleError);
   });
-
-
 
   socket.on('disconnect', () => {
     console.log('User Disconnected')
@@ -91,13 +70,30 @@ droneState.on(
   }, 100)
 );
 
-droneCam.on('message',
-  throttle(frame => {
-    console.log(`DRONE CAM: ${typeof(frame)}`);
-    io.sockets.emit('droneCam', frame);
-  }, 1000)
-)
+// droneCam.on('message',
+//   throttle(frame => {
+//     // console.log(`DRONE CAM: ${typeof(frame)}`);
+//     io.sockets.emit('droneCam', frame);
+//   }, 1000)
+// )
 
+// const sequence = ['command', 'battery?', 'takeoff', 'land'];
+const sequence = ['command', 'streamon', 'sdk?', 'sn?', 'mon'];
+
+let i = 0
+async function go() {
+  const command = sequence[i];
+  const delay = commandDelays[command];
+  console.log(`Sending command: ${command}`);
+  drone.send(command, 0, command.length, COMMAND_PORT, HOST, handleError);
+  await wait(delay);
+  i += 1;
+  if (i < sequence.length) {
+    return go();
+  }
+}
+
+go();
 
 server.listen(SOCKET_PORT, () => {
   console.log(`Socket io server up and running on port ${SOCKET_PORT}`);

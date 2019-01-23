@@ -13,6 +13,13 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+		<script type="text/javascript" src="./scripts/Decoder.js"></script>
+		<script type="text/javascript" src="./scripts/YUVCanvas.js"></script>
+		<script type="text/javascript" src="./scripts/Player.js"></script>
+		<script type="text/javascript" src="./scripts/stream.js"></script>
+		<script type="text/javascript" src="./scripts/mp4.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,7 +33,9 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div id="videoFeed"></div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -37,5 +46,23 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+
+      var h264_player = false;
+
+      function initCanvas() {
+      	h264_player = new Player({
+      		useWorker : true,
+      		workerFile : "./scripts/Decoder.js",
+      		webgl: 'auto',
+      		size: { width: 1280, height: 720} // w: 960, h: 720
+      	});
+      	document.getElementById("videoFeed").appendChild(h264_player.canvas);
+      }
+
+      initCanvas();
+      // connect();
+
+    </script>
   </body>
 </html>

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-import State from './components/State';
 import DroneState from './components/DroneState';
-import Commands from './components/Commands';
-import Controller from './components/Controller';
-import LeftJoyStick from './components/LeftJoystick';
-import RightJoyStick from './components/RightJoystick';
+import DroneDash from './components/DroneDash';
+import ControllerContainer from './container/ControllerContainer';
+import VideoStream from './components/VideoStream';
+import Sketch from './components/Sketch';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -30,8 +27,8 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const PageStyles = styled.div`
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 50px auto;
 `;
 
 class App extends Component {
@@ -39,12 +36,12 @@ class App extends Component {
     return (
       // <Controller />
       <PageStyles>
-        <h2>JavaScript Drone</h2>
         <GlobalStyle />
-        <Commands />
-        <DroneState />
-        <LeftJoyStick />
-        <RightJoyStick />
+        <VideoStream />
+        {/* <DroneState /> */}
+        <DroneDash />
+        <Sketch />
+        <ControllerContainer />
       </PageStyles>
 
       //<State />

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {Joystick} from 'react-joystick-component';
-import socket from '../socket';
+import socket from '../../socket';
 
-class LeftJoyStick extends Component {
+class RightJoyStick extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dist: 100
+      dist: 100,
+      degree: 15
     };
     this.handleMove = this.handleMove.bind(this);
   }
@@ -15,13 +16,13 @@ class LeftJoyStick extends Component {
   handleMove(e) {
     console.log(e.type, e.x, e.y, e.direction)
     if (e.direction === "FORWARD") {
-      socket.emit('command', `forward ${this.state.dist}`)
+      socket.emit('command', `up ${this.state.dist}`)
     } else if (e.direction === 'BACKWARD') {
-      socket.emit('command', `back ${this.state.dist}`)
+      socket.emit('command', `down ${this.state.dist}`)
     } else if (e.direction === 'LEFT') {
-      socket.emit('command', `left ${this.state.dist}`)
+      socket.emit('command', `ccw ${this.state.degree}`)
     } else if (e.direction === 'RIGHT') {
-      socket.emit('command', `right ${this.state.dist}`)
+      socket.emit('command', `cw ${this.state.degree}`)
     }
   }
 
@@ -37,7 +38,7 @@ class LeftJoyStick extends Component {
       <Joystick
         size={100}
         baseColor="gray"
-        stickColor="blue"
+        stickColor="red"
         throttle={10}
         move={this.handleMove}
         stop={this.handleStop}
@@ -48,4 +49,4 @@ class LeftJoyStick extends Component {
   }
 }
 
-export default LeftJoyStick;
+export default RightJoyStick;

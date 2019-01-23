@@ -1,0 +1,28 @@
+.ui.secondary.menu a:first-child {
+  margin-left: auto;
+}
+
+.ui.secondary.menu a:last-child {
+  margin-right: auto;
+}
+
+.ui.secondary.menu .item {
+  color: white;
+}
+
+.ui.secondary.menu .active.item {
+  background-color: gray;
+  color: white;
+}
+
+.joystick-container {
+  height: 100px;
+}
+
+.left-joystick {
+  float: left;
+}
+
+.right-joystick {
+  float: right;
+}
