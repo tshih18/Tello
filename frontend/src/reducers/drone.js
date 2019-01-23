@@ -1,6 +1,6 @@
 const initialState = {
-  dist: 100,  // 20-500
-  degree: 15, // 1-360
+  dist: 150,  // 20-500
+  degree: 45, // 1-360
   speed: 10,  // 10-100
 }
 

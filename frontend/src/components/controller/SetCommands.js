@@ -73,7 +73,7 @@ class SetCommands extends Component {
         <Button
           color='blue'
           content="Detect Mission Pad"
-          onClick={() => sendCommands(['command', 'mon', 'mdirection 2', 'takeoff'])}
+          onClick={() => sendCommands(['mon', 'mdirection 2', 'takeoff'])}
         />
         <div>
           <Input
